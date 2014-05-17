@@ -15,29 +15,24 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdio>
-#include <map>
-#include <string>
+#include "code.h"
 
-#include "parser/parser.h"
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-#include "generator.h"
-
-int main ( int argc, char** argv )
+namespace parser
 {
-    if( argc != 3 )
+    cType* cCode::CreateFromXml(rapidxml::xml_node<>* node)
     {
-        printf("autotype (input.xml) (output.h)\nPlease see the documentation for more details.\n");
-        return 1;
+        return new cCode(node->value());
     }
-  
-    // parse the xml file into nodes
-    parser::cParser xmlParser;
-    xmlParser.ParseXmlFile(argv[1]);
 
-    // generate the source
-    generator::generateFile( argv[2], fp.getTypes() );
+    const std::string& cCode::getCodeText() const
+    {
+        return mCodeText;
+    }
 
-    return 0;
+    cCode::cCode( const std::string& text )
+        : cType( "", false, false, "code", cCode::CreateFromXml )
+        , mCodeText(text)
+    {
+        ;
+    }
 }

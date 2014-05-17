@@ -88,7 +88,7 @@ void  parser::ParserFactory::processNode( rapidxml::xml_node<>* node )
     }
 }
 
-parser::p_class::p_member* parser::ParserFactory::processClassMemberNode( StringDict& dict )
+parser::cClass::p_member* parser::ParserFactory::processClassMemberNode( StringDict& dict )
 {
     //TODO: This needs to be changed to hande case sensitivity
     bool isList = false, isVector = false;
@@ -98,7 +98,7 @@ parser::p_class::p_member* parser::ParserFactory::processClassMemberNode( String
         isVector  = (dict["listType"] == "vector");
     }
 
-    return new p_class::p_member( dict["name"], dict["type"], isList, isVector );
+    return new cClass::p_member( dict["name"], dict["type"], isList, isVector );
 }
 
 void  parser::ParserFactory::processClassNode( rapidxml::xml_node<>* node )
@@ -172,7 +172,7 @@ void  parser::ParserFactory::processClassNode( rapidxml::xml_node<>* node )
         std::string vdtor = "virtual ~" + name + "( ) { }";
         interfaces.push_back( vdtor );
     }
-    mTypes.push_back( new p_class( name, false, false, memberList, interfaces, baseClassList ) );
+    mTypes.push_back( new cClass( name, false, false, memberList, interfaces, baseClassList ) );
 }
 
 void  parser::ParserFactory::processTypedefNode( StringDict& dict )
@@ -204,7 +204,7 @@ void  parser::ParserFactory::processTypedefNode( StringDict& dict )
                 startType = mTypes[ii];
 
                 // if it is a typedef, we need to recurse further
-                p_typedef *pTypedef = dynamic_cast<p_typedef*>(startType);
+                cTypedef *pTypedef = dynamic_cast<cTypedef*>(startType);
                 if ( pTypedef )
                 {
                     hasChanged = true; // continue iterating until we run out
@@ -219,56 +219,13 @@ void  parser::ParserFactory::processTypedefNode( StringDict& dict )
     if( startType == NULL )
     {
         p_type baseType( startTypeName, isList, isVector );
-        p_typedef *pTypedef = new p_typedef( baseType, startName );
+        cTypedef *pTypedef = new cTypedef( baseType, startName );
         mTypes.push_back( pTypedef );
     }
     else
     {
         p_type baseType( startTypeName, false, false );
-        p_typedef *pTypedef = new p_typedef( baseType, startName );        
+        cTypedef *pTypedef = new cTypedef( baseType, startName );        
         mTypes.push_back( pTypedef );
     }
-}
-
-void parser::ParserFactory::processEnumNode( rapidxml::xml_node<>* node )
-{
-    StringDict dict;
-    extractNodeAttributes( node, dict );            
-    std::string name = dict["name"];
-
-    // parse children
-    StringList members;
-    int lastEnumValue = 0;
-    char buffer[10];
-    for( xml_node<> *child = node->first_node("enum_value"); child; child = child->next_sibling("enum_value") )
-    {
-        StringDict memberAttrs;
-        extractNodeAttributes( child, memberAttrs );
-        std::string memberName = memberAttrs["name"];
-        std::string memberValue;
-        if( memberAttrs.count("value") != 1 )
-        {
-            sprintf( buffer, "%d", lastEnumValue++ );
-            memberValue = buffer;
-        }
-        else
-        {
-            memberValue = memberAttrs["value"];
-            // test to see if there is a valid number in there
-            int retVal;
-            if( sscanf( memberValue.c_str(), "%d", &retVal ) == 1 ) // sscanf found a number of some kind
-            {
-                lastEnumValue = retVal;
-            }
-            else
-            {
-                assert(false); // this is not good really
-                ++lastEnumValue;
-            }
-        }
-
-        members.push_back( memberName + " = " + memberValue + "," );
-    }
-
-    mTypes.push_back( new p_enum( name, members ) );
 }

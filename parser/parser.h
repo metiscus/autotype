@@ -1,5 +1,6 @@
+#pragma once
 /*
-        This file is part of AutoType
+    This file is part of AutoType
 
     AutoType is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,29 +16,23 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdio>
 #include <map>
 #include <string>
 
-#include "parser/parser.h"
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-#include "generator.h"
+#include "utility.h"
+#include "parser/type.h"
 
-int main ( int argc, char** argv )
+/*! \brief Contains all logic and classes for parsing syntax files */
+namespace parser
 {
-    if( argc != 3 )
+    class cParser
     {
-        printf("autotype (input.xml) (output.h)\nPlease see the documentation for more details.\n");
-        return 1;
-    }
-  
-    // parse the xml file into nodes
-    parser::cParser xmlParser;
-    xmlParser.ParseXmlFile(argv[1]);
+    public:
+        void ParseXmlFile( const char* filename );
+         
+        typedef std::map<std::string, std::shared_ptr<cType> > SymbolTable;
 
-    // generate the source
-    generator::generateFile( argv[2], fp.getTypes() );
-
-    return 0;
+    private:
+        SymbolTable mSymbolTable;
+    };
 }

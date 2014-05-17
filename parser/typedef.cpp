@@ -15,29 +15,30 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdio>
-#include <map>
-#include <string>
+#include "typedef.h"
 
-#include "parser/parser.h"
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-#include "generator.h"
-
-int main ( int argc, char** argv )
+namespace parser
 {
-    if( argc != 3 )
+    cTypedef::cTypedef( std::string type, std::string name, bool isList, bool isVector ) 
+        : cType( name, isList, isVector, "typedef", cTypedef::CreateFromXml )
+        , mType( type ) 
     {
-        printf("autotype (input.xml) (output.h)\nPlease see the documentation for more details.\n");
-        return 1;
+
     }
-  
-    // parse the xml file into nodes
-    parser::cParser xmlParser;
-    xmlParser.ParseXmlFile(argv[1]);
 
-    // generate the source
-    generator::generateFile( argv[2], fp.getTypes() );
+    const std::string& cTypedef::getType() const 
+    { 
+        return mType; 
+    }
 
-    return 0;
+    cType* cTypedef::CreateFromXml(rapidxml::xml_node<>* node)
+    {
+        // scoop up typedef info
+        StringDict dict;
+        extractNodeAttributes( node, dict );
+
+        bool isList   = dict["listType"] == "list";
+        bool isVector = dict["listType"] == "vector";
+        return new cTypedef( dict["type"], dict["name"], isList, isVector );
+    }
 }

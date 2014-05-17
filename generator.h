@@ -22,9 +22,9 @@
 
 namespace parser 
 {
-    class p_type;
+    class cType;
 
-    typedef std::vector<p_type*> TypeList;
+    typedef std::vector<std::shared_ptr<cType> > TypeList;
 }
 
 namespace generator

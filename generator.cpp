@@ -25,7 +25,7 @@ using namespace parser;
 using namespace generator; 
 
 /*! \internal This is not reentrant */
-std::map<std::string, p_class*> gClassMap; // this is horrible
+std::map<std::string, cClass*> gClassMap; // this is horrible
 
 /*! \internal Generates the text for the preamble of a generated code file */
 void generatePreamble( std::ofstream& file )
@@ -43,7 +43,7 @@ void generatePreamble( std::ofstream& file )
 }
 
 /*! \internal Generates the text for a member of a class */
-void generateMember ( std::ofstream& file, parser::p_class::p_member *type )
+void generateMember ( std::ofstream& file, parser::cClass::p_member *type )
 {
     if( !type->getIsListType() && !type->getIsVectorType() )
     {
@@ -76,7 +76,7 @@ void generateTypedef ( std::ofstream& file, parser::p_typedef *type )
 }
 
 /*! \internal Generates the text for a generated class */
-void generateClass ( std::ofstream& file, parser::p_class *type )
+void generateClass ( std::ofstream& file, parser::cClass *type )
 {    
     // add the new type into the map
     gClassMap[type->getName()] = type;
@@ -106,7 +106,7 @@ void generateClass ( std::ofstream& file, parser::p_class *type )
     const TypeList& memberList = type->getMembers();
     for( int ii=0; ii<memberList.size(); ++ii )
     {
-        p_class::p_member* pMember = dynamic_cast<p_class::p_member*>(memberList[ii]);
+        cClass::p_member* pMember = dynamic_cast<cClass::p_member*>(memberList[ii]);
         if ( pMember )
         {
             generateMember( file, pMember );
@@ -196,7 +196,7 @@ void generator::generateFile( const std::string filename, const parser::TypeList
     {
         p_type *pType = list[ii];
         p_typedef *pTypeDef = dynamic_cast<p_typedef*>(pType);
-        p_class *pClass     = dynamic_cast<p_class*>(pType);        
+        cClass *pClass     = dynamic_cast<cClass*>(pType);        
         p_enum  *pEnum      = dynamic_cast<p_enum*>(pType);
         if ( pTypeDef )
         {

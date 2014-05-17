@@ -1,5 +1,6 @@
+#pragma once
 /*
-        This file is part of AutoType
+    This file is part of AutoType
 
     AutoType is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,29 +16,27 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdio>
-#include <map>
-#include <string>
+#include "parser/type.h"
+#include "utility.h"
+#include <vector>
 
-#include "parser/parser.h"
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
-#include "generator.h"
-
-int main ( int argc, char** argv )
+/*! \brief Contains all logic and classes for parsing syntax files */
+namespace parser
 {
-    if( argc != 3 )
+    /*! \class cTypedef
+        \brief Represents a 'typedef' in c/c++.
+        \verbatim
+        <typedef name='U32' type='int'/>
+        \endverbatim
+    */
+    class cTypedef : public cType
     {
-        printf("autotype (input.xml) (output.h)\nPlease see the documentation for more details.\n");
-        return 1;
-    }
-  
-    // parse the xml file into nodes
-    parser::cParser xmlParser;
-    xmlParser.ParseXmlFile(argv[1]);
+    public:
+        static cType* CreateFromXml(rapidxml::xml_node<>* node);
+        const std::string& getType() const;
 
-    // generate the source
-    generator::generateFile( argv[2], fp.getTypes() );
-
-    return 0;
+    private:
+        cTypedef( std::string type, std::string name, bool isList, bool isVector );
+        std::string mType;
+    };
 }
