@@ -13,4 +13,4 @@ solution "AutoType"
 		kind "ConsoleApp"
 		language "C++"
 		files { "**.cpp", "**.h" }
-		includedirs{ "rapidxml" }
+		includedirs{ ".", "rapidxml" }

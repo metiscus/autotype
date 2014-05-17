@@ -20,8 +20,6 @@
 #include <string>
 
 #include "parser/parser.h"
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
 #include "generator.h"
 
 int main ( int argc, char** argv )

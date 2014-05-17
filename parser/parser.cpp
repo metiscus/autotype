@@ -17,6 +17,9 @@
 
 #include "parser.h"
 
+#include "rapidxml.hpp"
+#include "rapidxml_utils.hpp"
+
 /*! \brief Contains all logic and classes for parsing syntax files */
 namespace parser
 {
@@ -30,10 +33,11 @@ namespace parser
         doc.parse<0>(xmlFile.data());
 
         // todo: version check here
-        rapidxml::xml_node *pNode = doc->first_node("typecc");
-        for( rapidxml::xml_node child = pNode->first_node(); child; child = child->next_sibling() )
+        rapidxml::xml_node<> *pNode = doc.first_node("typecc");
+        for( rapidxml::xml_node<> *child = pNode->first_node(); child; child = child->next_sibling() )
         {
-            std::shared_ptr<cType> typeData = cType::CreateFromXml(child);
+            std::shared_ptr<cType> typeData;
+            typeData.reset(cType::CreateFromXml(child));
             if( typeData.get() != nullptr )
             {
                 // todo: this could allow duplicate definitions
