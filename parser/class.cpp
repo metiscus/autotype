@@ -214,7 +214,17 @@ namespace parser
 
             // write accessors
             std::string getFunc, getFuncConst;
-            std::string fullType = (*memberItr)->getName();
+            
+            std::string fullType = "";
+            cMember* pMember = dynamic_cast<cMember*>((*memberItr).get());
+            if( pMember )
+            {
+                fullType = pMember->getTypeName();
+            }
+            else
+            {
+                //ERROR!!!
+            }
 
             if ( (*memberItr)->getIsListType() )
             {
