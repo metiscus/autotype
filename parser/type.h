@@ -34,9 +34,7 @@ namespace parser
     */
     class cType 
     { 
-    public:
-        typedef cType* (*CreationFunction)(rapidxml::xml_node<>* node);
-        
+    public:      
         virtual ~cType();
         const std::string& getName( ) const;
         bool getIsListType( ) const;
@@ -44,13 +42,14 @@ namespace parser
 
         static cType* CreateFromXml (rapidxml::xml_node<>* node);
 
+        virtual std::string GenerateCode() const = 0;
+
     protected:
-        cType( const std::string& name, bool isList, bool isVector, const char* objectName, CreationFunction objectCreator = nullptr );
+        cType( const std::string& name, bool isList, bool isVector );
 
         std::string mName;
         bool mIsVectorType;
         bool mIsListType;
 
-        static std::map<std::string, CreationFunction> sTypeMap;
     };
 }

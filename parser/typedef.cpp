@@ -20,7 +20,7 @@
 namespace parser
 {
     cTypedef::cTypedef( std::string type, std::string name, bool isList, bool isVector ) 
-        : cType( name, isList, isVector, "typedef", cTypedef::CreateFromXml )
+        : cType( name, isList, isVector )
         , mType( type ) 
     {
 
@@ -40,5 +40,21 @@ namespace parser
         bool isList   = dict["listType"] == "list";
         bool isVector = dict["listType"] == "vector";
         return new cTypedef( dict["type"], dict["name"], isList, isVector );
+    }
+
+    std::string cTypedef::GenerateCode() const
+    {
+        std::string fullType = mType;
+
+        if ( getIsListType() )
+        {
+            fullType = "std::list<" + mType + ">";
+        }
+        else if ( getIsVectorType() )
+        {
+            fullType = "std::vector<" + mType + ">";
+        }
+
+        return "typedef " + fullType + " " + getName() + ";\n";
     }
 }

@@ -48,9 +48,9 @@ namespace parser
         {
         public:
             static cType* CreateFromXml(rapidxml::xml_node<>* node);
-
             const std::string& getTypeName() const;
-        
+            virtual std::string GenerateCode() const;
+
         private:
             cMember( const std::string& name, const std::string& type, bool isList, bool isVector );
             std::string mTypeName;
@@ -65,6 +65,7 @@ namespace parser
         {
         public:
             static cType* CreateFromXml(rapidxml::xml_node<>* node);
+            virtual std::string GenerateCode() const;
 
         private:
             cInterface ( const std::string& returnType, const std::string& name, const MemberList& params );
@@ -74,8 +75,7 @@ namespace parser
         };
 
         static cType* CreateFromXml(rapidxml::xml_node<>* node);
-
-        virtual ~cClass( );
+        virtual std::string GenerateCode() const;
 
         const TypeList& getMembers() const;
         const TypeList& getInterfaces() const;
@@ -84,7 +84,7 @@ namespace parser
     private:
         cClass( const std::string& name, const TypeList& members, const TypeList& interfaces, const StringList& bases);
 
-        TypeList   mMembers;
+        TypeList mMembers;
         TypeList mInterfaces;
         StringList mBaseClasses;
     };

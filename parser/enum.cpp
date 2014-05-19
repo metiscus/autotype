@@ -20,7 +20,7 @@
 namespace parser
 {
     cEnum::cEnum( std::string name, StringList members ) 
-        : cType( name, false, false, "enum", cEnum::CreateFromXml )
+        : cType( name, false, false )
         , mMembers( members ) 
     {
 
@@ -67,6 +67,20 @@ namespace parser
         }
 
         return new cEnum( name, members );        
+    }
+
+    std::string cEnum::GenerateCode() const
+    {
+        std::string ret;
+        ret += "enum " + getName() + "{\n";
+
+        for( auto itr = mMembers.begin() ; itr!=mMembers.end(); ++itr )
+        {
+            ret += (*itr) + "\n";
+        }
+        ret += "};\n";
+
+        return ret;
     }
 
     const StringList& cEnum::getMembers() const 

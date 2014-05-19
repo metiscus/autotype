@@ -24,13 +24,18 @@ namespace parser
         return new cCode(node->value());
     }
 
+    std::string cCode::GenerateCode() const
+    {
+        return mCodeText;
+    }
+
     const std::string& cCode::getCodeText() const
     {
         return mCodeText;
     }
 
     cCode::cCode( const std::string& text )
-        : cType( "", false, false, "code", cCode::CreateFromXml )
+        : cType( "", false, false )
         , mCodeText(text)
     {
         ;

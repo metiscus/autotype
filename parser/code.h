@@ -37,6 +37,8 @@ namespace parser
     {
     public:
         static cType* CreateFromXml(rapidxml::xml_node<>* node);
+        virtual std::string GenerateCode() const;
+
         const std::string& getCodeText() const;
 
     private:

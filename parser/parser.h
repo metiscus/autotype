@@ -16,7 +16,7 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <map>
+#include <list>
 #include <string>
 
 #include "utility.h"
@@ -29,10 +29,11 @@ namespace parser
     {
     public:
         void ParseXmlFile( const char* filename );
+        void GenerateFile( const char* filename );
          
-        typedef std::map<std::string, std::shared_ptr<cType> > SymbolTable;
+        typedef std::list<std::shared_ptr<cType> > TypeList;
 
     private:
-        SymbolTable mSymbolTable;
+        TypeList mTypes;
     };
 }

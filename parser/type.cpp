@@ -16,17 +16,18 @@
 */
 
 #include "type.h"
+#include "enum.h"
+#include "code.h"
+#include "class.h"
+#include "typedef.h"
 
 namespace parser
 {
-    std::map<std::string, cType::CreationFunction> cType::sTypeMap;
-
-    cType::cType( const std::string& name, bool isList, bool isVector, const char* objectName, CreationFunction objectCreator ) 
+    cType::cType( const std::string& name, bool isList, bool isVector ) 
         : mName ( name )
         , mIsListType( isList )
         , mIsVectorType( isVector ) 
     {
-        sTypeMap[objectName] = objectCreator;
     }
 
     cType::~cType()
@@ -36,17 +37,27 @@ namespace parser
 
     cType* cType::CreateFromXml(rapidxml::xml_node<>* node)
     {
-        cType *ret = nullptr;
-
-        StringDict values; 
-        extractNodeAttributes( node, values );
-        auto funcItr = sTypeMap.find(values["name"]);
-        if( funcItr != sTypeMap.end() )
+        std::string name = node->name();
+        if( name == "class" )
         {
-            ret = funcItr->second(node);
+            return cClass::CreateFromXml(node);
         }
-
-        return ret;
+        else if( name == "enum" )
+        {
+            return cEnum::CreateFromXml(node);
+        }
+        else if( name == "typedef" )
+        {
+            return cTypedef::CreateFromXml(node);
+        }
+        else if( name == "code" )
+        {
+            return cCode::CreateFromXml(node);
+        }
+        else
+        {
+            return nullptr;
+        }
     }
 
     const std::string& cType::getName( ) const 
