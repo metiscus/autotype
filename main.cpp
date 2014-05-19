@@ -20,7 +20,6 @@
 #include <string>
 
 #include "parser/parser.h"
-//#include "generator.h"
 
 int main ( int argc, char** argv )
 {
@@ -34,10 +33,6 @@ int main ( int argc, char** argv )
     parser::cParser xmlParser;
     xmlParser.ParseXmlFile(argv[1]);
     xmlParser.GenerateFile(argv[2]);
-
-
-    // generate the source
-    //generator::generateFile( argv[2], fp.getTypes() );
 
     return 0;
 }
