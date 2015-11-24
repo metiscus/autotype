@@ -105,20 +105,18 @@ void explodePath(const std::string& fullpath, std::string& path, std::string& fi
     size_t itr = path_in.rfind(PathSepChar);
     if(itr != std::string::npos)
     {
-        path = path_in.substr(0, itr);//std::string(path_in.begin(), path_in.begin() + itr);
-        path_in = path_in.substr(itr + 1, path_in.length() - itr - 1);//std::string(path_in.begin() + itr + 1, path_in.end());
+        path = path_in.substr(0, itr);
+        path_in = path_in.substr(itr + 1, path_in.length() - itr - 1);
     }
 
     itr = path_in.rfind(".");
     if(itr != std::string::npos)
     {
-        file = path_in.substr(0, itr);//std::string(path_in.begin(), path_in.begin() + itr);
+        file = path_in.substr(0, itr);
         extension = path_in.substr(itr + 1, path_in.length() - itr - 1);
     }
     else
     {
         file = path_in;
     }
-
-    printf("explodePath '%s '%s' '%s' '%s'\n", fullpath.c_str(), path.c_str(), file.c_str(), extension.c_str());
 }
