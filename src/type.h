@@ -17,7 +17,8 @@
 */
 
 #include <map>
-#include "rapidxml.hpp"
+#include <memory>
+#include <rapidxml/rapidxml.hpp>
 #include "utility.h"
 
 /*! \brief Contains all logic and classes for parsing syntax files */
@@ -32,9 +33,9 @@ namespace parser
         \details This class is used to represent any type that does not require
         special handling of some kind. E.g. int, float.
     */
-    class cType 
-    { 
-    public:      
+    class cType
+    {
+    public:
         virtual ~cType();
         const std::string& getName( ) const;
         bool getIsListType( ) const;

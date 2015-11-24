@@ -19,7 +19,7 @@
 #include <map>
 #include <string>
 
-#include "parser/parser.h"
+#include "parser.h"
 
 int main ( int argc, char** argv )
 {
@@ -28,7 +28,7 @@ int main ( int argc, char** argv )
         printf("autotype (input.xml) (output.h)\nPlease see the documentation for more details.\n");
         return 1;
     }
-  
+
     // parse the xml file into nodes
     parser::cParser xmlParser;
     xmlParser.ParseXmlFile(argv[1]);

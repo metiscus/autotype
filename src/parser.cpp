@@ -17,8 +17,8 @@
 
 #include "parser.h"
 
-#include "rapidxml.hpp"
-#include "rapidxml_utils.hpp"
+#include <rapidxml/rapidxml.hpp>
+#include <rapidxml/rapidxml_utils.hpp>
 
 /*! \brief Contains all logic and classes for parsing syntax files */
 namespace parser
@@ -57,7 +57,7 @@ namespace parser
             file<< "#include <vector>\n";
             file<< "\n";
 
-            file<< "typedef std::string String;\n"; 
+            file<< "typedef std::string String;\n";
             file<< "\n";
 
             for(auto itr=mTypes.begin(); itr!=mTypes.end(); ++itr)

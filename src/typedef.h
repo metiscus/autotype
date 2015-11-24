@@ -16,35 +16,29 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "parser/type.h"
+#include "type.h"
+#include "utility.h"
+#include <vector>
 
 /*! \brief Contains all logic and classes for parsing syntax files */
 namespace parser
 {
-    /*! \class cCode
-        \brief A directive that allows verbatim code to be inserted into the target file
+    /*! \class cTypedef
+        \brief Represents a 'typedef' in c/c++.
         \verbatim
-        <code>
-        // this makes Foo::Example available without having to adjust includes
-        namespace Foo {
-            class Example;
-        }
-        </code>
+        <typedef name='U32' type='int'/>
         \endverbatim
     */
-
-    class cCode : public cType
+    class cTypedef : public cType
     {
     public:
         static cType* CreateFromXml(rapidxml::xml_node<>* node);
         virtual std::string GenerateCode() const;
 
-        const std::string& getCodeText() const;
+        const std::string& getType() const;
 
     private:
-        cCode( const std::string& text );
-
-        std::string mCodeText;
+        cTypedef( std::string type, std::string name, bool isList, bool isVector );
+        std::string mType;
     };
-
 }

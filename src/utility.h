@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "rapidxml.hpp"
+#include <rapidxml/rapidxml.hpp>
 
 /*! \brief A list of strings */
 typedef std::vector<std::string> StringList;
@@ -49,7 +49,7 @@ void extractNodeAttributes( rapidxml::xml_node<>* node, StringDict& dict );
 StringList splitStringList( const std::string& longstring, const char sep = ',' );
 
 /*! \brief Removes leading and trailing whitespace from a string
-    \param[in] string 
+    \param[in] string
     \return string without leading or trailing spaces
 */
 std::string chompStr( const std::string& string );

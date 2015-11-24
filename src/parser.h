@@ -1,5 +1,6 @@
+#pragma once
 /*
-        This file is part of AutoType
+    This file is part of AutoType
 
     AutoType is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,29 +16,26 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "code.h"
+#include <list>
+#include <string>
 
+#include "utility.h"
+#include "type.h"
+
+/*! \brief Contains all logic and classes for parsing syntax files */
 namespace parser
 {
-    cType* cCode::CreateFromXml(rapidxml::xml_node<>* node)
+    class cParser
     {
-        return new cCode(node->value());
-    }
+    public:
+        cParser() = default;
+        ~cParser() = default;
+        void ParseXmlFile( const char* filename );
+        void GenerateFile( const char* filename );
 
-    std::string cCode::GenerateCode() const
-    {
-        return mCodeText;
-    }
+        typedef std::list<std::shared_ptr<cType> > TypeList;
 
-    const std::string& cCode::getCodeText() const
-    {
-        return mCodeText;
-    }
-
-    cCode::cCode( const std::string& text )
-        : cType( "", false, false )
-        , mCodeText(text)
-    {
-        ;
-    }
+    private:
+        TypeList mTypes;
+    };
 }

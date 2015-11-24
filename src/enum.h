@@ -16,7 +16,7 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "parser/type.h"
+#include "type.h"
 #include "utility.h"
 #include <vector>
 

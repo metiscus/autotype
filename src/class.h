@@ -16,7 +16,7 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "parser/type.h"
+#include "type.h"
 #include "utility.h"
 #include <vector>
 
@@ -38,13 +38,13 @@ namespace parser
     class cClass : public cType
     {
     public:
-        
+
         /*! \class cMember
         \brief Represents a member variable of a class in c/c++
         This can be either a naked type, another class, a typedef or an enum type.
         It is also used as parameters to an interface function.
         */
-        class cMember : public cType 
+        class cMember : public cType
         {
         public:
             static cType* CreateFromXml(rapidxml::xml_node<>* node);

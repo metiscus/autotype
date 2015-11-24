@@ -17,11 +17,12 @@
 
 #include "class.h"
 #include <sstream>
+#include <cstdint>
 
 namespace parser
 {
     //// cMember
-    cClass::cMember::cMember( const std::string& name, const std::string& type, bool isList, bool isVector ) 
+    cClass::cMember::cMember( const std::string& name, const std::string& type, bool isList, bool isVector )
         : cType(name, isList, isVector)
         , mTypeName( type )
     {
@@ -30,9 +31,7 @@ namespace parser
 
     cType* cClass::cMember::CreateFromXml(rapidxml::xml_node<>* node)
     {
-        cType *ret = nullptr;
-
-        StringDict values; 
+        StringDict values;
         extractNodeAttributes( node, values );
 
         bool isList = false, isVector = false;
@@ -65,9 +64,9 @@ namespace parser
         return "";
     }
 
-    const std::string& cClass::cMember::getTypeName() const 
-    { 
-        return mTypeName; 
+    const std::string& cClass::cMember::getTypeName() const
+    {
+        return mTypeName;
     }
 
 
@@ -75,7 +74,7 @@ namespace parser
     cClass::cInterface::cInterface ( const std::string& returnType, const std::string& name, const MemberList& params )
         : mReturnType( returnType )
         , mParams( params )
-        , cType( name, false, false ) 
+        , cType( name, false, false )
     {
 
     }
@@ -115,14 +114,13 @@ namespace parser
     std::string cClass::cInterface::GenerateCode() const
     {
         std::string ifText = "virtual " + mReturnType + " " + getName() + "( ";
-        bool hasParams = false;
-        
+
         // now process any params
         for( auto i=0U; mParams.size() > 0 && i<mParams.size() - 1; ++i )
         {
             ifText += mParams[i]->GenerateCode() + ", ";
         }
-        
+
         ifText += mParams[mParams.size() - 1]->GenerateCode() + " ";
 
         // end the function
@@ -132,24 +130,24 @@ namespace parser
     }
 
     //// cClass
-    cClass::cClass( const std::string& name, const TypeList& members, const TypeList& interfaces, const StringList& bases) 
+    cClass::cClass( const std::string& name, const TypeList& members, const TypeList& interfaces, const StringList& bases)
         : cType(name, false, false)
         , mMembers( members )
         , mInterfaces( interfaces )
-        , mBaseClasses( bases ) 
+        , mBaseClasses( bases )
     {
     }
 
     cType* cClass::CreateFromXml(rapidxml::xml_node<>* node)
-    {      
+    {
         // scoop up class info
         StringDict dict;
-        extractNodeAttributes( node, dict );  
+        extractNodeAttributes( node, dict );
 
         // scoop up base classes
         StringList baseClassList;
         if( dict["base"].length() > 0 )
-        {        
+        {
             const std::string& baseClassStr = dict["base"];
             baseClassList = splitStringList( baseClassStr );
         }
@@ -190,7 +188,7 @@ namespace parser
         if( isDerived )
         {
             file<<": ";
-            for(int ii=0; ii<baseClasses.size(); ++ii)
+            for(uint32_t ii=0; ii<baseClasses.size(); ++ii)
             {
                 file<<"public "<<baseClasses[ii];
                 if( ii<baseClasses.size()-1 )
@@ -214,7 +212,7 @@ namespace parser
 
             // write accessors
             std::string getFunc, getFuncConst;
-            
+
             std::string fullType = "";
             cMember* pMember = dynamic_cast<cMember*>((*memberItr).get());
             if( pMember )
@@ -235,7 +233,7 @@ namespace parser
                 fullType = "std::vector<" + fullType + ">";
             }
 
-            getFunc = fullType + "& Get" + (*memberItr)->getName() + "( ) { return m" + (*memberItr)->getName() + ";" + " }\n";            
+            getFunc = fullType + "& Get" + (*memberItr)->getName() + "( ) { return m" + (*memberItr)->getName() + ";" + " }\n";
             getFuncConst = "const " + fullType + "& Get" + (*memberItr)->getName() + "( ) const { return m" + (*memberItr)->getName() + ";" + " }\n";
             accessorTexts.push_back( getFunc );
             accessorTexts.push_back( getFuncConst );
@@ -248,14 +246,14 @@ namespace parser
 
         file<<"\n";
         file<<"public:\n";
-        for( int ii=0; ii<accessorTexts.size(); ++ii )
+        for( uint32_t ii=0; ii<accessorTexts.size(); ++ii )
         {
             file<<"\t"<<accessorTexts[ii];
         }
 
         auto ifList = getInterfaces();
         // write out interfaces
-        for( int ii=0; ii<ifList.size(); ++ii  )
+        for( uint32_t ii=0; ii<ifList.size(); ++ii  )
         {
             file<<"\t"<<ifList[ii]->GenerateCode()<<"\n";
         }
@@ -264,18 +262,18 @@ namespace parser
         return file.str();
     }
 
-    const TypeList& cClass::getMembers() const 
-    { 
-        return mMembers; 
+    const TypeList& cClass::getMembers() const
+    {
+        return mMembers;
     }
 
-    const TypeList& cClass::getInterfaces() const 
-    { 
-        return mInterfaces; 
+    const TypeList& cClass::getInterfaces() const
+    {
+        return mInterfaces;
     }
 
-    const StringList& cClass::getBaseClasses() const 
-    { 
-        return mBaseClasses; 
+    const StringList& cClass::getBaseClasses() const
+    {
+        return mBaseClasses;
     }
 }
