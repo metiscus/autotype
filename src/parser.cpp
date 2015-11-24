@@ -53,6 +53,12 @@ namespace parser
             if(cType::GetOptions().Get<bool>("use_old_style_guards"))
             {
                 // extract only the base name of the file
+                std::string path, filename_root, extension;
+                explodePath(std::string(filename), path, filename_root, extension);
+                std::string guard = stringToUpper(filename_root) + cType::GetOptions().Get<std::string>("old_style_sep") + std::string("H") +
+                    cType::GetOptions().Get<std::string>("old_style_sep") + cType::GetOptions().Get<std::string>("old_style_postfix");
+                file<< "#ifndef " << guard << "\n";
+                file<< "#define " << guard << "\n";
             }
             else
             {
@@ -70,6 +76,11 @@ namespace parser
             for(auto itr=mTypes.begin(); itr!=mTypes.end(); ++itr)
             {
                 file<<(*itr)->GenerateCode()<<"\n";
+            }
+
+            if(cType::GetOptions().Get<bool>("use_old_style_guards"))
+            {
+                file<< "#endif\n";
             }
         }
     }

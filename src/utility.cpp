@@ -89,17 +89,17 @@ std::string chompStr( const std::string& string )
 
 std::string stringToUpper( const std::string& string )
 {
-    std::string upper;
-    std::transform(string.begin(), string.end(), upper.begin(), toupper);
+    std::string upper = string;
+    std::transform(upper.begin(), upper.end(), upper.begin(), toupper);
     return upper;
 }
 
 void explodePath(const std::string& fullpath, std::string& path, std::string& file, std::string& extension)
 {
 #ifdef WIN32
-    const std::string PathSepChar = "/";
-#else
     const std::string PathSepChar = "\\";
+#else
+    const std::string PathSepChar = "/";
 #endif
     std::string path_in = fullpath;
     size_t itr = path_in.rfind(PathSepChar);
@@ -119,4 +119,6 @@ void explodePath(const std::string& fullpath, std::string& path, std::string& fi
     {
         file = path_in;
     }
+
+    printf("explodePath '%s '%s' '%s' '%s'\n", fullpath.c_str(), path.c_str(), file.c_str(), extension.c_str());
 }

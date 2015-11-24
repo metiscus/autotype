@@ -21,6 +21,8 @@
 #include "class.h"
 #include "typedef.h"
 
+#include <cstdio>
+
 namespace parser
 {
     cTypeOptions cType::mOptions;
@@ -29,8 +31,13 @@ namespace parser
     {
         Set("use_multifile", false);
         Set("use_old_style_guards", true);
-        Set("old_style_sep", "_");
-        Set("old_style_postfix", "INCLUDED");
+        Set("old_style_sep", std::string("_"));
+        Set("old_style_postfix", std::string("INCLUDED"));
+    }
+
+    void cTypeOptions::Set(const std::string& name, const char* value)
+    {
+        mOptionStrings[name] = std::string(value);
     }
 
     void cTypeOptions::Set(const std::string& name, const std::string& value)

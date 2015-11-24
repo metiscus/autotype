@@ -40,24 +40,19 @@ namespace parser
         template <typename T>
         const T& Get(const std::string& name)
         {
-            return GetOptionValue<T>(name, identity<T>());
+            return GetOptionValue(name, identity<T>());
         }
 
         template <typename T>
         const T& Get(const char* name)
         {
-            return GetOptionValue<T>(std::string(name), identity<T>());
+            return GetOptionValue(std::string(name), identity<T>());
         }
 
+        void Set(const std::string& name, const char* value);
         void Set(const std::string& name, const std::string& value);
         void Set(const std::string& name, const bool& value);
     private:
-        template <typename T>
-        const T& GetOptionValue(const std::string&, identity<T>)
-        {
-            return T();
-        }
-
         const bool& GetOptionValue(const std::string& name, identity<bool>)
         {
             return mOptionBools[name];
