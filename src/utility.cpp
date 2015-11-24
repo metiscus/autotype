@@ -20,6 +20,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 using namespace rapidxml;
 
@@ -46,7 +47,7 @@ void extractNodeAttributes( rapidxml::xml_node<>* node, StringDict& dict )
     for( xml_attribute<> *attr = node->first_attribute(); attr!=NULL; attr = attr->next_attribute() )
     {
         dict[attr->name()] = attr->value();
-    }    
+    }
 }
 
 StringList splitStringList( const std::string& longstring, const char sep )
@@ -73,15 +74,49 @@ std::string chompStr( const std::string& string )
     {
         return "";
     }
-    
+
     std::string::size_type beg = string.find_first_not_of( " " );
     if( beg == std::string::npos )
     {
         return "";
     }
 
-    std::string::size_type end = string.find_last_not_of( " " );  
-    
+    std::string::size_type end = string.find_last_not_of( " " );
+
 
     return string.substr( beg, end-beg+1 );
+}
+
+std::string stringToUpper( const std::string& string )
+{
+    std::string upper;
+    std::transform(string.begin(), string.end(), upper.begin(), toupper);
+    return upper;
+}
+
+void explodePath(const std::string& fullpath, std::string& path, std::string& file, std::string& extension)
+{
+#ifdef WIN32
+    const std::string PathSepChar = "/";
+#else
+    const std::string PathSepChar = "\\";
+#endif
+    std::string path_in = fullpath;
+    size_t itr = path_in.rfind(PathSepChar);
+    if(itr != std::string::npos)
+    {
+        path = path_in.substr(0, itr);//std::string(path_in.begin(), path_in.begin() + itr);
+        path_in = path_in.substr(itr + 1, path_in.length() - itr - 1);//std::string(path_in.begin() + itr + 1, path_in.end());
+    }
+
+    itr = path_in.rfind(".");
+    if(itr != std::string::npos)
+    {
+        file = path_in.substr(0, itr);//std::string(path_in.begin(), path_in.begin() + itr);
+        extension = path_in.substr(itr + 1, path_in.length() - itr - 1);
+    }
+    else
+    {
+        file = path_in;
+    }
 }

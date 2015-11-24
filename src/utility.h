@@ -33,23 +33,30 @@ typedef std::map<std::string, std::string> StringDict;
     \param[in] filename The name of the file to open and read.
     \return The contents of the file as a string.
 */
-std::string readFile( const std::string& filename );
+extern std::string readFile( const std::string& filename );
 
 /*! \brief Extracts the attributes from a rapidxml node, results placed in string dictionary.
     \param[in] node The xml node to extract from.
     \param[in,out] dict The string dictionary to return results with.
 */
-void extractNodeAttributes( rapidxml::xml_node<>* node, StringDict& dict );
+extern void extractNodeAttributes( rapidxml::xml_node<>* node, StringDict& dict );
 
 /*! \brief Splits a string using the separator character.
     \param[in] longstring The main string to split.
     \param[in] sep The chacacter to split.
     \return The list longstring split using , with leading and trailing spaces removed
 */
-StringList splitStringList( const std::string& longstring, const char sep = ',' );
+extern StringList splitStringList( const std::string& longstring, const char sep = ',' );
 
 /*! \brief Removes leading and trailing whitespace from a string
     \param[in] string
     \return string without leading or trailing spaces
 */
-std::string chompStr( const std::string& string );
+extern std::string chompStr( const std::string& string );
+
+/*! \brief Converts a string to upper case
+    \returns a string converted to upper case
+*/
+extern std::string stringToUpper( const std::string& string );
+
+extern void explodePath(const std::string& fullpath, std::string& path, std::string& file, std::string& extension);

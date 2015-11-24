@@ -1,7 +1,7 @@
 COPTS= -I. -Iexternal
 
 CXX := g++
-CXXFLAGS := -g -Wall -Wextra -Wunused -Wundef -Wuninitialized -Winit-self -Weffc++ -std=c++11 -fdiagnostics-color  $(COPTS)
+CXXFLAGS := -g -Wall -Wextra -std=c++11 -fdiagnostics-color  $(COPTS)
 LDFLAGS :=
 
 # Rule for building .o from .cpp with dependency generation

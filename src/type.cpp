@@ -23,10 +23,30 @@
 
 namespace parser
 {
-    cType::cType( const std::string& name, bool isList, bool isVector ) 
+    cTypeOptions cType::mOptions;
+
+    cTypeOptions::cTypeOptions()
+    {
+        Set("use_multifile", false);
+        Set("use_old_style_guards", true);
+        Set("old_style_sep", "_");
+        Set("old_style_postfix", "INCLUDED");
+    }
+
+    void cTypeOptions::Set(const std::string& name, const std::string& value)
+    {
+        mOptionStrings[name] = value;
+    }
+
+    void cTypeOptions::Set(const std::string& name, const bool& value)
+    {
+        mOptionBools[name] = value;
+    }
+
+    cType::cType( const std::string& name, bool isList, bool isVector )
         : mName ( name )
         , mIsListType( isList )
-        , mIsVectorType( isVector ) 
+        , mIsVectorType( isVector )
     {
     }
 
@@ -60,18 +80,18 @@ namespace parser
         }
     }
 
-    const std::string& cType::getName( ) const 
-    { 
+    const std::string& cType::getName( ) const
+    {
         return mName;
     }
 
-    bool cType::getIsListType( ) const 
-    { 
+    bool cType::getIsListType( ) const
+    {
         return mIsListType;
     }
 
-    bool cType::getIsVectorType( ) const 
-    { 
-        return mIsVectorType; 
+    bool cType::getIsVectorType( ) const
+    {
+        return mIsVectorType;
     }
 }
