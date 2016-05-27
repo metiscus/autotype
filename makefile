@@ -28,7 +28,6 @@ AUTOTYPE_SRC =\
 
 AUTOTYPE_CPP = $(filter %.cpp,$(AUTOTYPE_SRC))
 AUTOTYPE_OBJ = $(AUTOTYPE_CPP:.cpp=.o)
--include $(AUTOTYPE_OBJ:.o=.d)
 
 autotype: $(AUTOTYPE_OBJ) $(AUTOTYPE_SRC)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o autotype $(AUTOTYPE_OBJ)
@@ -36,3 +35,5 @@ autotype: $(AUTOTYPE_OBJ) $(AUTOTYPE_SRC)
 clean:
 	-rm -f autotype $(AUTOTYPE_OBJ)
 	-find -iname "*.d" -exec rm -f {} \; -print
+
+-include $(AUTOTYPE_OBJ:.o=.d)
