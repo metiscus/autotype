@@ -16,15 +16,23 @@
     along with AutoType.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <list>
-#include <string>
 
-#include "utility.h"
+#include "ast.h"
+#include <list>
+#include "options.h"
 #include "type.h"
+#include <string>
+#include "utility.h"
+
 
 /*! \brief Contains all logic and classes for parsing syntax files */
 namespace parser
 {
+    ASTPtr ParseXMLFile(const char* filename);
+    void GenerateFile(ASTPtr ptr, const char* filename);
+    
+    const Options& GetOptions();
+    
     class cParser
     {
     public:

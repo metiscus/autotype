@@ -6,13 +6,7 @@ LDFLAGS :=
 
 # Rule for building .o from .cpp with dependency generation
 %.o: %.cpp
-	$(CXX) -c $(CXXFLAGS) $*.cpp -o $*.o
-	$(CXX) -MM $(CXXFLAGS) $*.cpp > $*.d
-	@mv -f $*.d $*.d.tmp
-	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
-	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
-	  sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
-	@rm -f $*.d.tmp
+	$(CXX) -c $(CXXFLAGS)  -MD $*.cpp -o $*.o
 
 default: autotype
 
@@ -24,6 +18,8 @@ AUTOTYPE_SRC =\
 	src/type.h src/type.cpp\
 	src/typedef.h src/typedef.cpp\
 	src/utility.h src/utility.cpp\
+	src/ast.h src/ast.cpp\
+	src/options.h src/options.cpp\
 	src/main.cpp
 
 AUTOTYPE_CPP = $(filter %.cpp,$(AUTOTYPE_SRC))

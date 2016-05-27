@@ -21,6 +21,40 @@
 
 #include "parser.h"
 
+class MyVisitor : public ASTVisitor
+{
+public:
+    
+    virtual void VisitNode(AST* node)
+    {
+        switch(node->GetType())
+        {
+
+            case AST::Type_Class:
+            {
+                for(int i=0; i<GetDepth() * 4; ++i)
+                {
+                    printf(" ");
+                }
+                printf("class %s {\n", node->GetName().c_str());
+                break;
+            }
+            case AST::Type_Member:
+            {
+                for(int i=0; i<GetDepth() * 4; ++i)
+                {
+                    printf(" ");
+                }
+                StringDict& dict = node->GetAttributes();
+                printf("const %s& Get%s() const;\n", 
+                       dict["type"].c_str(), node->GetName().c_str());
+                break;
+            }
+        }
+    }
+    
+};
+
 int main ( int argc, char** argv )
 {
     if( argc != 3 )
@@ -30,9 +64,12 @@ int main ( int argc, char** argv )
     }
 
     // parse the xml file into nodes
-    parser::cParser xmlParser;
-    xmlParser.ParseXmlFile(argv[1]);
-    xmlParser.GenerateFile(argv[2]);
+    //parser::cParser xmlParser;
+    //xmlParser.ParseXmlFile(argv[1]);
+    //xmlParser.GenerateFile(argv[2]);
+    ASTPtr ast = parser::ParseXMLFile(argv[1]);
+    MyVisitor v;
+    ast->Apply(v);
 
     return 0;
 }
