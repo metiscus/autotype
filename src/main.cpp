@@ -53,6 +53,23 @@ public:
         }
     }
     
+    virtual void ExitNode(AST* node)
+    {
+        switch(node->GetType())
+        {
+
+            case AST::Type_Class:
+            {
+                for(int i=0; i<GetDepth() * 4; ++i)
+                {
+                    printf(" ");
+                }
+                printf("};\n\n");
+            }
+        }
+        ASTVisitor::ExitNode(node);
+    }
+    
 };
 
 int main ( int argc, char** argv )

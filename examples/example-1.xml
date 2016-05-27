@@ -1,6 +1,6 @@
 <typecc version='1.0'>
 
-  <class name='user'>
+  <class name='User'>
     <member name='Id' type='int' />
     <member name='Username' type='String' />
     <member name='Password' type='String' />
@@ -8,7 +8,7 @@
     <member name='Email' type='String' />
   </class>
 
-  <typedef name='UserList' type='user*' listType='list' />
+  <typedef name='UserList' type='User*' listType='list' />
 
   <enum name='MovementDirection'>
     <enum_value name='MOVE_UP' />
@@ -17,7 +17,7 @@
     <enum_value name='MOVE_RIGHT' />
   </enum>
 
-  <class name='location'>
+  <class name='Location'>
     <member name='Id' type='int' />
     <member name='X' type='int' />
     <member name='Y' type='int' />
